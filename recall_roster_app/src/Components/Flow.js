@@ -10,43 +10,30 @@ let iterator = 0;
 
 const nodeTypes = {
     customNode: CustomNode,
-  };
+};
 
 const newNodes = dummyData.map( ele =>{
     if(iterator >= 1){
         if( iterator % 2 == 0 ){
-            iteratorY += 50
+            iteratorY += 100
         }
     }
-    (iterator % 2 == 0) ? iteratorX += 155 : iteratorX += -155;
+    (iterator % 2 == 0) ? iteratorX += 255 : iteratorX += -255;
     iterator += 1;
     return({
         id: ele.id,
         position: { x: iteratorX, y: iteratorY},
-        data: { label: ele.name},
+        data: { 
+            name: ele.name,
+            phone: ele.phone,
+            address: ele.address
+
+        },
         type: 'customNode'
     })
 });
 
-
-
-const initialNodes = [
-    {
-      id: '1',
-      data: { label: 'Hello' },
-      position: { x: 0, y: 0 },
-      type: 'customNode',
-    },
-    {
-      id: '2',
-      data: { label: 'World' },
-      position: { x: 100, y: 100 },
-    },
-  ];
-
 const initialEdges = [{ id: '1-2', source: '1', target: '2', label: 'to the', type: 'step' }];
-
-
 
 function Flow() {
 
@@ -67,6 +54,7 @@ function Flow() {
     <div style={{ height: '100%', width: '100%' }}>
       <ReactFlow         
         nodes={nodes}
+        nodeTypes={nodeTypes}
         onNodesChange={onNodesChange}
         edges={edges}
         onEdgesChange={onEdgesChange}>
