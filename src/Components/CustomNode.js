@@ -5,8 +5,17 @@ export default memo(({ data, isConnectable }) => {
     let reportsTo = ""
 
     if(data.hasOwnProperty('rt')){
-        reportsTo = <div style={{ color: 'red'}}>{data.rt}</div>
+        reportsTo = (
+          <div style={{ color: 'red'}}>
+            {data.rt}
+            <Handle type="source" position={Position.Top} id="a" />
+          </div>
+          )
 
+    } else {
+      reportsTo = (
+        <Handle type="source" position={Position.Bottom} id="a" />
+      )
     }
 
   return (
