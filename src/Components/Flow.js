@@ -13,6 +13,8 @@ const nodeTypes = {
 };
 
 const newNodes = dummyData.map( ele =>{
+    let reportsTo = {}
+    
     if(iterator >= 1){
         if( iterator % 2 == 0 ){
             iteratorY += 100
@@ -20,14 +22,17 @@ const newNodes = dummyData.map( ele =>{
     }
     (iterator % 2 == 0) ? iteratorX += 255 : iteratorX += -255;
     iterator += 1;
+
+    if(ele.hasOwnProperty('rt')){ reportsTo = { rt:ele.rt } }
+
     return({
         id: ele.id,
         position: { x: iteratorX, y: iteratorY},
         data: { 
             name: ele.name,
             phone: ele.phone,
-            address: ele.address
-
+            address: ele.address,
+            ...reportsTo
         },
         type: 'customNode'
     })
