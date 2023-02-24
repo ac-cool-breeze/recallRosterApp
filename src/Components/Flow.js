@@ -7,53 +7,63 @@ import CustomNode  from './CustomNode';
 let iteratorX = 0;
 let iteratorY = 0;
 let iterator = 0;
+let parentNodes = [];
 
 const nodeTypes = {
     customNode: CustomNode,
 };
 
 const newNodes = dummyData.map( ele =>{
-    let reportsTo = {}
+  let reportsTo = {}
     
-    if(iterator >= 1){
-        if( iterator % 2 == 0 ){
-            iteratorY += 100
-        }
-    }
-    (iterator % 2 == 0) ? iteratorX += 255 : iteratorX += -255;
-    iterator += 1;
+  // if(iterator >= 1){
+  //   if( iterator % 2 === 0 ){
+  //     iteratorY += 100
+  //   }
+  // }
+  // (iterator % 2 === 0) ? iteratorX += 255 : iteratorX += -255;
+  // iterator += 1;
 
-    if(ele.hasOwnProperty('rt')){ reportsTo = { rt:ele.rt } }
+  if(ele.hasOwnProperty('rt')){ 
+    reportsTo = { rt:ele.rt } 
+    iteratorY = 125
+  }
+  // Step 1: Finding ParentNodes when looping through
+  else {
+    parentNodes = parentNodes.concat({"parent" : ele.id})
+    iteratorY = 0
+  }
 
-    return({
-        id: ele.id,
-        position: { x: iteratorX, y: iteratorY},
-        data: { 
-            name: ele.name,
-            phone: ele.phone,
-            address: ele.address,
-            ...reportsTo
-        },
-        type: 'customNode'
-    })
+  return({
+      id: ele.id,
+      position: { x: iteratorX, y: iteratorY},
+      data: { 
+          name: ele.name,
+          phone: ele.phone,
+          address: ele.address,
+          ...reportsTo
+      },
+      type: 'customNode'
+  })
 });
+
+console.log('parentNodes:', parentNodes)
 
 const initialEdges = [{ id: '1-2', source: '1', target: '2', label: 'to the', type: 'step' }];
 
 function Flow() {
+  const [nodes, setNodes] = useState(newNodes);
+  const [edges, setEdges] = useState(initialEdges);
 
-    const [nodes, setNodes] = useState(newNodes);
-    const [edges, setEdges] = useState(initialEdges);
+  const onNodesChange = useCallback(
+      (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
+      []
+    );
 
-    const onNodesChange = useCallback(
-        (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
-        []
-      );
-
-    const onEdgesChange = useCallback(
-        (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-        []
-      );
+  const onEdgesChange = useCallback(
+      (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+      []
+    );
 
   return (
     <div style={{ height: '100%', width: '100%' }}>
