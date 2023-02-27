@@ -3,11 +3,12 @@ import 'reactflow/dist/style.css';
 import  dummyData from '../dummyRoster.json';
 import { useState, useCallback } from 'react';
 import CustomNode  from './CustomNode';
+import dagre from 'dagre';
 
 let iteratorX = 0;
 let iteratorY = 0;
-let iterator = 0;
 let parentNodes = [];
+const initialEdges = [];
 
 const nodeTypes = {
     customNode: CustomNode,
@@ -15,18 +16,11 @@ const nodeTypes = {
 
 const newNodes = dummyData.map( ele =>{
   let reportsTo = {}
-    
-  // if(iterator >= 1){
-  //   if( iterator % 2 === 0 ){
-  //     iteratorY += 100
-  //   }
-  // }
-  // (iterator % 2 === 0) ? iteratorX += 255 : iteratorX += -255;
-  // iterator += 1;
 
   if(ele.hasOwnProperty('rt')){ 
     reportsTo = { rt:ele.rt } 
-    iteratorY = 125
+    iteratorY = 150
+    initialEdges.push({ id: `${ele.id}-${ele.rt}`, source: ele.id, target: ele.rt , type: 'step' })
   }
   // Step 1: Finding ParentNodes when looping through
   else {
@@ -49,7 +43,7 @@ const newNodes = dummyData.map( ele =>{
 
 console.log('parentNodes:', parentNodes)
 
-const initialEdges = [{ id: '1-2', source: '1', target: '2', label: 'to the', type: 'step' }];
+
 
 function Flow() {
   const [nodes, setNodes] = useState(newNodes);

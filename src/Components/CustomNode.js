@@ -7,14 +7,14 @@ export default memo(({ data, isConnectable }) => {
     if(data.hasOwnProperty('rt')){
         reportsTo = (
           <div style={{ color: 'red'}}>
-            {data.rt}
-            <Handle type="source" position={Position.Top} id="a" />
+            {/* {data.rt} */}
+            <Handle type="source" position={Position.Top} id={`${data.id}-source`} />
+            <Handle type="target" position={Position.Bottom} id={`${data.id}-target`} />
           </div>
           )
-
     } else {
       reportsTo = (
-        <Handle type="source" position={Position.Bottom} id="a" />
+        <Handle type="target" position={Position.Bottom} id={`${data.id}-target`} />
       )
     }
 
