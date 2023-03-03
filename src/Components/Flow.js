@@ -44,7 +44,6 @@ const newNodes = dummyData.map( ele =>{
 console.log('parentNodes:', parentNodes)
 
 
-
 function Flow() {
   const [nodes, setNodes] = useState(newNodes);
   const [edges, setEdges] = useState(initialEdges);
@@ -75,3 +74,4 @@ function Flow() {
 }
 
 export default Flow;
+
