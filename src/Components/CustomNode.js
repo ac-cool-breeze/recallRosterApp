@@ -8,8 +8,8 @@ export default memo(({ data, isConnectable }) => {
         reportsTo = (
           <div style={{ color: 'red'}}>
             {/* {data.rt} */}
-            <Handle type="source" position={Position.Top} id={`${data.id}-source`} />
-            <Handle type="target" position={Position.Bottom} id={`${data.id}-target`} />
+            {/* <Handle type="source" position={Position.Top} id={`${data.id}-source`} />
+            <Handle type="target" position={Position.Bottom} id={`${data.id}-target`} /> */}
           </div>
           )
     } else {
