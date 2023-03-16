@@ -14,34 +14,36 @@ const nodeTypes = {
     customNode: CustomNode,
 };
 
-const newNodes = dummyData.map( ele =>{
-  let reportsTo = {}
+const newNodes = dummyData.map(ele => {
+  let reportsTo = {};
 
-  if(ele.hasOwnProperty('rt')){ 
-    reportsTo = { rt:ele.rt } 
-    iteratorY = 150
-    initialEdges.push({ id: `${ele.id}-${ele.rt}`, source: ele.id, target: ele.rt , type: 'step' })
-  }
-  // Step 1: Finding ParentNodes when looping through
-  else {
-    parentNodes = parentNodes.concat({"parent" : ele.id})
-    iteratorY = 0
+  if (ele.hasOwnProperty("rt")) {
+    reportsTo = { rt: ele.rt };
+    iteratorY = 150;
+    initialEdges.push({ id: `${ele.id}-${ele.rt}`, source: ele.id, target: ele.rt, type: "step" });
+  } else {
+    parentNodes = parentNodes.concat({ parent: ele.id });
+    iteratorY = 0;
   }
 
-  return({
-      id: ele.id,
-      position: { x: iteratorX, y: iteratorY},
-      data: { 
-          name: ele.name,
-          phone: ele.phone,
-          address: ele.address,
-          ...reportsTo
-      },
-      type: 'customNode'
-  })
+  const hasNoChildren = ele.hasOwnProperty("hasNoChildren") ? ele.hasNoChildren : true;
+
+  return {
+    id: ele.id,
+    position: { x: iteratorX, y: iteratorY },
+    data: {
+      name: ele.name,
+      phone: ele.phone,
+      address: ele.address,
+      hasNoChildren,
+      ...reportsTo
+    },
+    type: "customNode"
+  };
 });
 
-console.log('parentNodes:', parentNodes)
+
+console.log("parentNodes:", parentNodes);
 
 
 function Flow() {

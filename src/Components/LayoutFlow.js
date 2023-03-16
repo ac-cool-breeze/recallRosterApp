@@ -43,6 +43,7 @@ const initialNodes = dummyData.map( ele =>{
           name: ele.name,
           phone: ele.phone,
           address: ele.address,
+          hasNoChildren: ele.hasNoChildren,
           ...reportsTo
       },
       type: 'customNode'
