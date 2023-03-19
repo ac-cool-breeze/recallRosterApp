@@ -1,14 +1,19 @@
-# from base image node
-FROM node:8.11-slim
-
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
-
-# copy oter files as well
+# ==== CONFIGURE =====
+# Use a Node 16 base image
+FROM node:16-alpine 
+# Set the working directory to /app inside the container
+WORKDIR /app
+# Copy app files
 COPY . .
-
-#expose the port
+# ==== BUILD =====
+# Install dependencies (npm ci makes sure the exact versions in the lockfile gets installed)
+RUN npm ci 
+# Build the app
+RUN npm run build
+# ==== RUN =======
+# Set the env to "production"
+ENV NODE_ENV production
+# Expose the port on which the app will be running (3000 is the default that `serve` uses)
 EXPOSE 80
-
-# command to run when intantiate an image
-CMD ["node","app.js"]
+# Start the app
+CMD [ "npx", "serve", "build" ]
