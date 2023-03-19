@@ -5,7 +5,7 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 # copy oter files as well
-COPY dist/app.js .
+COPY . .
 
 #expose the port
 EXPOSE 80
