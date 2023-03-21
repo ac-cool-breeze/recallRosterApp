@@ -3,53 +3,48 @@ import 'reactflow/dist/style.css';
 import  dummyData from '../dummyRoster.json';
 import { useState, useCallback } from 'react';
 import CustomNode  from './CustomNode';
+import dagre from 'dagre';
 
 let iteratorX = 0;
 let iteratorY = 0;
-let iterator = 0;
 let parentNodes = [];
+const initialEdges = [];
 
 const nodeTypes = {
     customNode: CustomNode,
 };
 
-const newNodes = dummyData.map( ele =>{
-  let reportsTo = {}
-    
-  // if(iterator >= 1){
-  //   if( iterator % 2 === 0 ){
-  //     iteratorY += 100
-  //   }
-  // }
-  // (iterator % 2 === 0) ? iteratorX += 255 : iteratorX += -255;
-  // iterator += 1;
+const newNodes = dummyData.map(ele => {
+  let reportsTo = {};
 
-  if(ele.hasOwnProperty('rt')){ 
-    reportsTo = { rt:ele.rt } 
-    iteratorY = 125
-  }
-  // Step 1: Finding ParentNodes when looping through
-  else {
-    parentNodes = parentNodes.concat({"parent" : ele.id})
-    iteratorY = 0
+  if (ele.hasOwnProperty("rt")) {
+    reportsTo = { rt: ele.rt };
+    iteratorY = 150;
+    initialEdges.push({ id: `${ele.id}-${ele.rt}`, source: ele.id, target: ele.rt, type: "step" });
+  } else {
+    parentNodes = parentNodes.concat({ parent: ele.id });
+    iteratorY = 0;
   }
 
-  return({
-      id: ele.id,
-      position: { x: iteratorX, y: iteratorY},
-      data: { 
-          name: ele.name,
-          phone: ele.phone,
-          address: ele.address,
-          ...reportsTo
-      },
-      type: 'customNode'
-  })
+  const hasNoChildren = ele.hasOwnProperty("hasNoChildren") ? ele.hasNoChildren : true;
+
+  return {
+    id: ele.id,
+    position: { x: iteratorX, y: iteratorY },
+    data: {
+      name: ele.name,
+      phone: ele.phone,
+      address: ele.address,
+      hasNoChildren,
+      ...reportsTo
+    },
+    type: "customNode"
+  };
 });
 
-console.log('parentNodes:', parentNodes)
 
-const initialEdges = [{ id: '1-2', source: '1', target: '2', label: 'to the', type: 'step' }];
+console.log("parentNodes:", parentNodes);
+
 
 function Flow() {
   const [nodes, setNodes] = useState(newNodes);
@@ -81,3 +76,4 @@ function Flow() {
 }
 
 export default Flow;
+
